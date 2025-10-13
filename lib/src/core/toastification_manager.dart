@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/scheduler.dart';
@@ -49,13 +51,20 @@ class ToastificationManager {
     required ToastificationAnimationBuilder? animationBuilder,
     required Duration? animationDuration,
     required ToastificationCallbacks callbacks,
+    String? tag,
     Duration? autoCloseDuration,
   }) {
+    final existingIndex = notifications.indexWhere((n) => n.tag == tag);
+    if (existingIndex >= 0) {
+      dismiss(notifications[existingIndex], showRemoveAnimation: false);
+    }
+
     final item = ToastificationItem(
       builder: builder,
+      tag: tag,
       alignment: alignment,
       animationBuilder: animationBuilder,
-      animationDuration: animationDuration,
+      animationDuration: existingIndex >= 0 ? Duration.zero : animationDuration,
       autoCloseDuration: autoCloseDuration,
       onAutoCompleteCompleted: (toastItem) {
         dismiss(toastItem);
@@ -68,18 +77,18 @@ class ToastificationManager {
     }
 
     scheduler.addPostFrameCallback((_) {
-      _addItemToList(item);
+      _addItemToList(item, max(existingIndex, 0));
     });
 
     return item;
   }
 
-  void _addItemToList(ToastificationItem item) {
+  void _addItemToList(ToastificationItem item, int index) {
     if (notifications.contains(item)) return;
 
-    notifications.insert(0, item);
+    notifications.insert(index, item);
     listGlobalKey.currentState?.insertItem(
-      0,
+      index,
       duration: _createAnimationDuration(item),
     );
 

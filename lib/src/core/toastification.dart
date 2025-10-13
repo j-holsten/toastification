@@ -117,6 +117,7 @@ class Toastification {
     AlignmentGeometry? alignment,
     TextDirection? direction,
     required ToastificationBuilder builder,
+    String? tag,
     ToastificationAnimationBuilder? animationBuilder,
     Duration? animationDuration,
     Duration? autoCloseDuration,
@@ -161,6 +162,7 @@ class Toastification {
     );
 
     return manager.showCustom(
+      tag: tag,
       builder: builder,
       scheduler: SchedulerBinding.instance,
       animationBuilder: animationBuilder,
@@ -195,6 +197,7 @@ class Toastification {
   ToastificationItem showWithNavigatorState({
     required NavigatorState navigator,
     required ToastificationBuilder builder,
+    String? tag,
     AlignmentGeometry? alignment,
     TextDirection? textDirection,
     ToastificationAnimationBuilder? animationBuilder,
@@ -206,6 +209,7 @@ class Toastification {
 
     return showCustom(
       context: context,
+      tag: tag,
       alignment: alignment,
       direction: textDirection,
       builder: builder,
@@ -240,6 +244,7 @@ class Toastification {
   /// TODO(payam): add close button icon parameter
   ToastificationItem show({
     BuildContext? context,
+    String? tag,
     OverlayState? overlayState,
     AlignmentGeometry? alignment,
     Duration? autoCloseDuration,
@@ -283,6 +288,7 @@ class Toastification {
 
     return showCustom(
       context: context,
+      tag: tag,
       overlayState: overlayState,
       alignment: alignment,
       direction: direction,

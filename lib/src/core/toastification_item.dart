@@ -59,6 +59,7 @@ class ToastificationItem implements Equatable {
   ToastificationItem({
     required this.builder,
     required this.alignment,
+    this.tag,
     this.animationBuilder,
     this.animationDuration,
     this.autoCloseDuration,
@@ -82,6 +83,12 @@ class ToastificationItem implements Equatable {
   /// unique id for the toastification item
   /// this id will be used to identify the toastification item
   final String id;
+
+  /// Tag, which can be used to group several notification items. Whenever a
+  /// new item with the same tag is created, any item with the same tag that is
+  /// already active is replaced. This ensures that only one item per tag is
+  /// visible at any given time.
+  final String? tag;
 
   /// the alignment of the toastification item
   /// this alignment will be used to define the position of the toastification item in the screen
