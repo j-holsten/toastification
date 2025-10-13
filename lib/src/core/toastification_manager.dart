@@ -55,9 +55,6 @@ class ToastificationManager {
     Duration? autoCloseDuration,
   }) {
     final existingIndex = notifications.indexWhere((n) => n.tag == tag);
-    if (existingIndex >= 0) {
-      dismiss(notifications[existingIndex], showRemoveAnimation: false);
-    }
 
     final item = ToastificationItem(
       builder: builder,
@@ -77,6 +74,9 @@ class ToastificationManager {
     }
 
     scheduler.addPostFrameCallback((_) {
+      if (existingIndex >= 0) {
+        _removeItem(existingIndex);
+      }
       _addItemToList(item, max(existingIndex, 0));
     });
 
@@ -95,6 +95,22 @@ class ToastificationManager {
     while (notifications.length > config.maxToastLimit) {
       dismissLast();
     }
+  }
+
+  void _removeItem(int index) {
+    final notification = notifications[index];
+
+    if (notification.isRunning) {
+      notification.stop();
+    }
+
+    notifications.removeAt(index);
+    listGlobalKey.currentState?.removeItem(
+      index,
+          (BuildContext context, Animation<double> animation) {
+        return const SizedBox.shrink();
+      },
+    );
   }
 
   /// Finds the [ToastificationItem] with the given [id].
