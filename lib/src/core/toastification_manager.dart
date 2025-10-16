@@ -110,6 +110,7 @@ class ToastificationManager {
           (BuildContext context, Animation<double> animation) {
         return const SizedBox.shrink();
       },
+      duration: Duration.zero,
     );
   }
 
