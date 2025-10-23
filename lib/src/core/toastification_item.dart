@@ -60,6 +60,7 @@ class ToastificationItem implements Equatable {
     required this.builder,
     required this.alignment,
     this.tag,
+    this.isUpdate = false,
     this.animationBuilder,
     this.animationDuration,
     this.autoCloseDuration,
@@ -89,6 +90,11 @@ class ToastificationItem implements Equatable {
   /// already active is replaced. This ensures that only one item per tag is
   /// visible at any given time.
   final String? tag;
+
+  /// Whether this toastification item is only an update of an existing item,
+  /// i.e. whether the snackbar was already visible.
+  /// Only applicable when [tag] is set.
+  final bool isUpdate;
 
   /// the alignment of the toastification item
   /// this alignment will be used to define the position of the toastification item in the screen

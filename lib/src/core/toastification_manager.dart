@@ -55,10 +55,12 @@ class ToastificationManager {
     Duration? autoCloseDuration,
   }) {
     final existingIndex = notifications.indexWhere((n) => n.tag == tag);
+    final isUpdate = existingIndex >= 0;
 
     final item = ToastificationItem(
       builder: builder,
       tag: tag,
+      isUpdate: isUpdate,
       alignment: alignment,
       animationBuilder: animationBuilder,
       animationDuration: existingIndex >= 0 ? Duration.zero : animationDuration,
@@ -74,7 +76,7 @@ class ToastificationManager {
     }
 
     scheduler.addPostFrameCallback((_) {
-      if (existingIndex >= 0) {
+      if (isUpdate) {
         _removeItem(existingIndex);
       }
       _addItemToList(item, max(existingIndex, 0));
